@@ -45,5 +45,6 @@ public class WootechcoStore {
         OutputView.printOrderMenu(order);
         OutputView.printOrderTotalPrice(order);
         OutputView.printPresent(order);
+        OutputView.printEventDetail(order);
     }
 }

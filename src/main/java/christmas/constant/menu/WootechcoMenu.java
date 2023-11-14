@@ -43,4 +43,8 @@ public enum WootechcoMenu {
     public int getPrice() {
         return price;
     }
+
+    public MenuType getType() {
+        return type;
+    }
 }

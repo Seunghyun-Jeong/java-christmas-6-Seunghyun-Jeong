@@ -49,4 +49,61 @@ public class OutputView {
         System.out.println(Message.OUTPUT_RECEIPT_EMPTY);
         System.out.println();
     }
+
+    public static void printEventDetail(Order order) {
+        System.out.println(Message.OUTPUT_RECEIPT_EVENT_TITLE);
+        printDdayDiscount(order);
+        printWeekDayDiscount(order);
+        printWeekEndDiscount(order);
+        printSpecialDiscount(order);
+        printPresentDiscount(order);
+        printEmptyDiscount(order);
+        System.out.println();
+    }
+
+    private static void printDdayDiscount(Order order) {
+        if (order.getDdayDiscount() > 0) {
+            System.out.println(
+                    Message.OUTPUT_RECEIPT_EVENT_CHRISTMAS + PRICE_THOUSAND_FORMAT.format(order.getDdayDiscount())
+                            + MESSAGE_SUFFIX_PRICE);
+        }
+    }
+
+    private static void printWeekDayDiscount(Order order) {
+        if (order.getWeekDayDiscount() > 0) {
+            System.out.println(
+                    Message.OUTPUT_RECEIPT_EVENT_WEEKDAY + PRICE_THOUSAND_FORMAT.format(order.getWeekDayDiscount())
+                            + MESSAGE_SUFFIX_PRICE);
+        }
+    }
+
+    private static void printWeekEndDiscount(Order order) {
+        if (order.getWeekEndDiscount() > 0) {
+            System.out.println(
+                    Message.OUTPUT_RECEIPT_EVENT_WEEKEND + PRICE_THOUSAND_FORMAT.format(order.getWeekEndDiscount())
+                            + MESSAGE_SUFFIX_PRICE);
+        }
+    }
+
+    private static void printSpecialDiscount(Order order) {
+        if (order.getSpecialDiscount() > 0) {
+            System.out.println(
+                    Message.OUTPUT_RECEIPT_EVENT_SPECIAL + PRICE_THOUSAND_FORMAT.format(order.getSpecialDiscount())
+                            + MESSAGE_SUFFIX_PRICE);
+        }
+    }
+
+    private static void printPresentDiscount(Order order) {
+        if (order.getOrderTotalPrice() >= StoreConstant.PRESENT_PAYMENT) {
+            System.out.println(Message.OUTPUT_RECEIPT_EVENT_PRESENT);
+        }
+    }
+
+    private static void printEmptyDiscount(Order order) {
+        if (order.getDdayDiscount() == 0 && order.getWeekDayDiscount() == 0 && order.getWeekEndDiscount() == 0
+                && order.getSpecialDiscount() == 0
+                && order.getOrderTotalPrice() <= StoreConstant.PRESENT_PAYMENT) {
+            System.out.println(Message.OUTPUT_RECEIPT_EMPTY);
+        }
+    }
 }
