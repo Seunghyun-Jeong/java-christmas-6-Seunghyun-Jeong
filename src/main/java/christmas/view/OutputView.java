@@ -1,5 +1,6 @@
 package christmas.view;
 
+import christmas.constant.StoreConstant;
 import christmas.constant.menu.Message;
 import christmas.model.Order;
 import java.text.DecimalFormat;
@@ -35,6 +36,17 @@ public class OutputView {
     public static void printOrderTotalPrice(Order order) {
         System.out.println(Message.OUTPUT_RECEIPT_TOTAL_PRICE_TITLE);
         System.out.println(PRICE_THOUSAND_FORMAT.format(order.getOrderTotalPrice()) + MESSAGE_SUFFIX_PRICE);
+        System.out.println();
+    }
+
+    public static void printPresent(Order order) {
+        System.out.println(Message.OUTPUT_RECEIPT_PRESENT_TITLE);
+        if (order.getOrderTotalPrice() >= StoreConstant.PRESENT_PAYMENT) {
+            System.out.println(Message.OUTPUT_RECEIPT_PRESENT);
+            System.out.println();
+            return;
+        }
+        System.out.println(Message.OUTPUT_RECEIPT_EMPTY);
         System.out.println();
     }
 }
