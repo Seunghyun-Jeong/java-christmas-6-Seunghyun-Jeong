@@ -3,16 +3,22 @@ package christmas.controller;
 import christmas.constant.menu.WootechcoMenu;
 import christmas.exception.WootechcoIllegalArgumentException;
 import christmas.model.Order;
+import christmas.serivce.OrderCalculator;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.Map;
 
 public class WootechcoStore {
+
+    OrderCalculator orderCalculator = new OrderCalculator();
+
     public void reserve() {
         Order order = new Order();
         printWelcome();
         order.setReservationDate(reserveDate());
         order.setOrderMenu(reserveOrderMenu());
+        orderCalculator.calculateOrder(order);
+        printNoticeDiscount(order);
         printReceipt(order);
     }
 
@@ -38,6 +44,10 @@ public class WootechcoStore {
                 OutputView.printErrorMessage(e.getMessage());
             }
         }
+    }
+
+    private void printNoticeDiscount(Order order) {
+        OutputView.printNoticeDiscount(order);
     }
 
     private void printReceipt(Order order) {

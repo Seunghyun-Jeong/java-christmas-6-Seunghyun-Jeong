@@ -1,17 +1,20 @@
 package christmas.model;
 
-import static christmas.constant.menu.MenuType.DESSERT;
-import static christmas.constant.menu.MenuType.MAIN;
-
 import christmas.constant.StoreConstant;
 import christmas.constant.menu.WootechcoMenu;
-import christmas.util.DateUtil;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Order {
     private int reservationDate;
     private Map<WootechcoMenu, Integer> orderMenu = new HashMap<>();
+
+    private int orderTotalPrice;
+    private int ddayDiscount;
+    private int weekDayDiscount;
+    private int weekEndDiscount;
+    private int specialDiscount;
+    private int totalDiscount;
 
     public Order() {
     }
@@ -33,58 +36,92 @@ public class Order {
     }
 
     public int getOrderTotalPrice() {
-        return orderMenu.entrySet().stream().mapToInt(entry -> entry.getKey().getPrice() * entry.getValue()).sum();
+        return orderTotalPrice;
     }
 
     public int getDdayDiscount() {
-        int ddayDiscount = 0;
-        if (this.reservationDate <= 25) {
-            ddayDiscount = 1000;
-            for (int i = 1; i < this.reservationDate; i++) {
-                ddayDiscount += 100;
-            }
-        }
         return ddayDiscount;
     }
 
     public int getWeekDayDiscount() {
-        int weekDayDiscount = StoreConstant.DISCOUNT_PRICE;
-        int WeekDayDiscountResult = 0;
-        if (DateUtil.isWeekDay(this.reservationDate)) {
-            int dessertCount = orderMenu.entrySet().stream().filter(entry -> entry.getKey().getType() == DESSERT).mapToInt(entry->entry.getValue()).sum();
-            WeekDayDiscountResult = dessertCount * weekDayDiscount;
-        }
-        return WeekDayDiscountResult;
+        return weekDayDiscount;
     }
 
     public int getWeekEndDiscount() {
-        int weekEndDiscount = StoreConstant.DISCOUNT_PRICE;
-        int WeekEndDiscountResult = 0;
-        if (DateUtil.isWeekEnd(this.reservationDate)) {
-            int mainCount = orderMenu.entrySet().stream().filter(entry -> entry.getKey().getType() == MAIN).mapToInt(entry->entry.getValue()).sum();
-            WeekEndDiscountResult = mainCount * weekEndDiscount;
-        }
-        return WeekEndDiscountResult;
+        return weekEndDiscount;
     }
 
     public int getSpecialDiscount() {
-        int specialDiscount = 0;
-        if (DateUtil.isStarDayOrChirstmas(this.reservationDate)) {
-            specialDiscount = 1000;
-        }
         return specialDiscount;
     }
 
     public int getTotalDiscount() {
-        int ddayDiscount = getDdayDiscount();
-        int WeekDayDiscountResult = getWeekDayDiscount();
-        int WeekEndDiscountResult = getWeekEndDiscount();
-        int specialDiscount = getSpecialDiscount();
-        int totalDiscount = (ddayDiscount + WeekDayDiscountResult + WeekEndDiscountResult + specialDiscount);
-        if (orderMenu.entrySet().stream().mapToInt(entry -> entry.getKey().getPrice() * entry.getValue()).sum()
-                >= StoreConstant.PRESENT_PAYMENT) {
-            totalDiscount += 25000;
-        }
         return totalDiscount;
+    }
+
+    public void setDdayDiscount(int ddayDiscount) {
+        this.ddayDiscount = ddayDiscount;
+    }
+
+    public void setWeekDayDiscount(int weekDayDiscount) {
+        this.weekDayDiscount = weekDayDiscount;
+    }
+
+    public void setWeekEndDiscount(int weekEndDiscount) {
+        this.weekEndDiscount = weekEndDiscount;
+    }
+
+    public void setSpecialDiscount(int specialDiscount) {
+        this.specialDiscount = specialDiscount;
+    }
+
+    public void setTotalDiscount(int totalDiscount) {
+        this.totalDiscount = totalDiscount;
+    }
+
+    public void setOrderTotalPrice(int orderTotalPrice) {
+        this.orderTotalPrice = orderTotalPrice;
+    }
+
+    public boolean isNotZeroDdayDiscount() {
+        return ddayDiscount > 0;
+    }
+
+    public boolean isNotZeroWeekDayDiscount() {
+        return weekDayDiscount > 0;
+    }
+
+    public boolean isNotZeroWeekEndDiscount() {
+        return weekEndDiscount > 0;
+    }
+
+    public boolean isNotZeroSpecialDiscount() {
+        return specialDiscount > 0;
+    }
+
+    public boolean isPresentOffer() {
+        return orderTotalPrice >= StoreConstant.PRESENT_PAYMENT;
+    }
+
+    public boolean isEmptyEventDetail() {
+        return !isNotZeroDdayDiscount() && !isNotZeroWeekDayDiscount()
+                && !isNotZeroWeekEndDiscount() && !isNotZeroSpecialDiscount()
+                && !isPresentOffer();
+    }
+
+    public boolean isApplyDiscount() {
+        return orderTotalPrice >= StoreConstant.DISCOUNT_MIN_PRICE;
+    }
+
+    public int getPaymentResult() {
+        return orderTotalPrice - totalDiscount;
+    }
+
+    public int getEventTotalDiscount() {
+        int eventTotalDiscount = totalDiscount;
+        if (isPresentOffer()) {
+            eventTotalDiscount += WootechcoMenu.CHAMPAGNE.getPrice();
+        }
+        return eventTotalDiscount;
     }
 }

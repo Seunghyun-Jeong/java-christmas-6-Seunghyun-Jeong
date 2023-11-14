@@ -22,22 +22,17 @@ public class InputView {
 
     public static Map<WootechcoMenu, Integer> inputOrderMenu() {
         Map<WootechcoMenu, Integer> orderMenu = new HashMap<>();
-        int limitamount = 0;
         System.out.println(Message.INPUT_ORDER_MENU);
         try {
             String[] orderInput = Console.readLine().split(",");
             for (String orderString : orderInput) {
                 String[] orderResult = orderString.split("-");
-                String menuString = orderResult[0];
-                WootechcoMenu menu = WootechcoMenu.ofMenuName(menuString);
+                WootechcoMenu menu = WootechcoMenu.ofMenuName(orderResult[0]);
                 int amount = Integer.parseInt(orderResult[1]);
-                ReservationValidator.validateMenuInput(menu, amount);
-                ReservationValidator.validateDuplicatedOrderMenu(orderMenu, menu);
+                ReservationValidator.validateSingleMenuInput(orderMenu, menu, amount);
                 orderMenu.put(menu, amount);
-                limitamount = limitamount + amount;
-                ReservationValidator.validateLimitAmout(limitamount);
-                ReservationValidator.validateOnlyBeverage(orderMenu);
             }
+            ReservationValidator.validateOrderMenu(orderMenu);
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_MENU);
         }

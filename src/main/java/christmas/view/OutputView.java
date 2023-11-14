@@ -9,12 +9,18 @@ public class OutputView {
     private final static String MESSAGE_PREFIX_ERROR = "[ERROR] ";
     private final static String MESSAGE_SUFFIX_COUNT = "개";
     private final static String MESSAGE_SUFFIX_PRICE = "원";
+    private final static int MESSAGE_DISCOUNT_PRICE_MARK_NEGATIVE = -1;
     private final static DecimalFormat PRICE_THOUSAND_FORMAT = new DecimalFormat("###,###");
 
     public static void printWelcomeMessage() {
         System.out.println(Message.OUTPUT_WELCOME);
     }
 
+    public static void printNoticeDiscount(Order order) {
+        if (!order.isApplyDiscount()) {
+            System.out.println(Message.WARN_ORDER_MENU);
+        }
+    }
     public static void printErrorMessage(String errorMessage) {
         System.out.println(MESSAGE_PREFIX_ERROR + errorMessage);
     }
@@ -41,7 +47,7 @@ public class OutputView {
 
     public static void printPresent(Order order) {
         System.out.println(Message.OUTPUT_RECEIPT_PRESENT_TITLE);
-        if (order.getOrderTotalPrice() >= StoreConstant.PRESENT_PAYMENT) {
+        if (order.isPresentOffer()) {
             System.out.println(Message.OUTPUT_RECEIPT_PRESENT);
             System.out.println();
             return;
@@ -52,6 +58,11 @@ public class OutputView {
 
     public static void printEventDetail(Order order) {
         System.out.println(Message.OUTPUT_RECEIPT_EVENT_TITLE);
+        if (!order.isApplyDiscount()) {
+            System.out.println(Message.OUTPUT_RECEIPT_EMPTY);
+            System.out.println();
+            return;
+        }
         printDdayDiscount(order);
         printWeekDayDiscount(order);
         printWeekEndDiscount(order);
@@ -62,76 +73,81 @@ public class OutputView {
     }
 
     private static void printDdayDiscount(Order order) {
-        if (order.getDdayDiscount() > 0) {
+        if (order.isNotZeroDdayDiscount()) {
             System.out.println(
-                    Message.OUTPUT_RECEIPT_EVENT_CHRISTMAS + PRICE_THOUSAND_FORMAT.format(order.getDdayDiscount())
+                    Message.OUTPUT_RECEIPT_EVENT_CHRISTMAS + PRICE_THOUSAND_FORMAT.format(
+                            order.getDdayDiscount() * MESSAGE_DISCOUNT_PRICE_MARK_NEGATIVE)
                             + MESSAGE_SUFFIX_PRICE);
         }
     }
 
     private static void printWeekDayDiscount(Order order) {
-        if (order.getWeekDayDiscount() > 0) {
+        if (order.isNotZeroWeekDayDiscount()) {
             System.out.println(
-                    Message.OUTPUT_RECEIPT_EVENT_WEEKDAY + PRICE_THOUSAND_FORMAT.format(order.getWeekDayDiscount())
+                    Message.OUTPUT_RECEIPT_EVENT_WEEKDAY + PRICE_THOUSAND_FORMAT.format(
+                            order.getWeekDayDiscount() * MESSAGE_DISCOUNT_PRICE_MARK_NEGATIVE)
                             + MESSAGE_SUFFIX_PRICE);
         }
     }
 
     private static void printWeekEndDiscount(Order order) {
-        if (order.getWeekEndDiscount() > 0) {
+        if (order.isNotZeroWeekEndDiscount()) {
             System.out.println(
-                    Message.OUTPUT_RECEIPT_EVENT_WEEKEND + PRICE_THOUSAND_FORMAT.format(order.getWeekEndDiscount())
+                    Message.OUTPUT_RECEIPT_EVENT_WEEKEND + PRICE_THOUSAND_FORMAT.format(
+                            order.getWeekEndDiscount() * MESSAGE_DISCOUNT_PRICE_MARK_NEGATIVE)
                             + MESSAGE_SUFFIX_PRICE);
         }
     }
 
     private static void printSpecialDiscount(Order order) {
-        if (order.getSpecialDiscount() > 0) {
+        if (order.isNotZeroSpecialDiscount()) {
             System.out.println(
-                    Message.OUTPUT_RECEIPT_EVENT_SPECIAL + PRICE_THOUSAND_FORMAT.format(order.getSpecialDiscount())
+                    Message.OUTPUT_RECEIPT_EVENT_SPECIAL + PRICE_THOUSAND_FORMAT.format(
+                            order.getSpecialDiscount() * MESSAGE_DISCOUNT_PRICE_MARK_NEGATIVE)
                             + MESSAGE_SUFFIX_PRICE);
         }
     }
 
     private static void printPresentDiscount(Order order) {
-        if (order.getOrderTotalPrice() >= StoreConstant.PRESENT_PAYMENT) {
+        if (order.isPresentOffer()) {
             System.out.println(Message.OUTPUT_RECEIPT_EVENT_PRESENT);
         }
     }
 
     private static void printEmptyDiscount(Order order) {
-        if (order.getDdayDiscount() == 0 && order.getWeekDayDiscount() == 0 && order.getWeekEndDiscount() == 0
-                && order.getSpecialDiscount() == 0
-                && order.getOrderTotalPrice() <= StoreConstant.PRESENT_PAYMENT) {
+        if (order.isEmptyEventDetail()) {
             System.out.println(Message.OUTPUT_RECEIPT_EMPTY);
         }
     }
 
     public static void printEventTotalDiscount(Order order) {
         System.out.println(Message.OUTPUT_RECEIPT_EVENT_TOTAL_TITLE);
-        System.out.println("-" + PRICE_THOUSAND_FORMAT.format(order.getTotalDiscount()) + MESSAGE_SUFFIX_PRICE);
+
+        String eventTotalDiscountMessage =
+                PRICE_THOUSAND_FORMAT.format(order.getEventTotalDiscount() * MESSAGE_DISCOUNT_PRICE_MARK_NEGATIVE)
+                        + MESSAGE_SUFFIX_PRICE;
+        System.out.println(eventTotalDiscountMessage);
         System.out.println();
     }
 
     public static void printPaymentResult(Order order) {
         System.out.println(Message.OUTPUT_RECEIPT_PAYMENT_TITLE);
-        System.out.println(PRICE_THOUSAND_FORMAT.format(order.getOrderTotalPrice() - order.getTotalDiscount())
-                + MESSAGE_SUFFIX_PRICE);
+        System.out.println(PRICE_THOUSAND_FORMAT.format(order.getPaymentResult()) + MESSAGE_SUFFIX_PRICE);
         System.out.println();
     }
 
     public static void printEventBadge(Order order) {
         System.out.println(Message.OUTPUT_RECEIPT_BADGE_TITLE);
-        int totalDiscount = order.getTotalDiscount();
-        if (totalDiscount >= StoreConstant.BADGE_SANTA) {
+        int eventTotalDiscount = order.getEventTotalDiscount();
+        if (eventTotalDiscount >= StoreConstant.BADGE_SANTA) {
             System.out.println(Message.OUTPUT_RECEIPT_BADGE_SANTA);
             return;
         }
-        if (totalDiscount >= StoreConstant.BADGE_TREE) {
+        if (eventTotalDiscount >= StoreConstant.BADGE_TREE) {
             System.out.println(Message.OUTPUT_RECEIPT_BADGE_TREE);
             return;
         }
-        if (totalDiscount >= StoreConstant.BADGE_STAR) {
+        if (eventTotalDiscount >= StoreConstant.BADGE_STAR) {
             System.out.println(Message.OUTPUT_RECEIPT_BADGE_STAR);
             return;
         }

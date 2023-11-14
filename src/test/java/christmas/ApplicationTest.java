@@ -42,10 +42,50 @@ class ApplicationTest extends NsTest {
     }
 
     @Test
+    void 날짜_1미만_테스트() {
+        assertSimpleTest(() -> {
+            runException("0");
+            assertThat(output()).contains("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @Test
+    void 날짜_31초과_테스트() {
+        assertSimpleTest(() -> {
+            runException("32");
+            assertThat(output()).contains("[ERROR] 유효하지 않은 날짜입니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @Test
     void 주문_예외_테스트() {
         assertSimpleTest(() -> {
             runException("3", "제로콜라-a");
             assertThat(output()).contains("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @Test
+    void 주문_스플릿_예외_테스트() {
+        assertSimpleTest(() -> {
+            runException("3", "제로콜라,2");
+            assertThat(output()).contains("[ERROR] 유효하지 않은 주문입니다. 다시 입력해 주세요.");
+        });
+    }
+
+    @Test
+    void 음료만_주문_예외_테스트() {
+        assertSimpleTest(() -> {
+            runException("3", "제로콜라-2,레드와인-3");
+            assertThat(output()).contains("[ERROR] 메인 메뉴와 디저트를 추가해서 다시 입력해 주세요.");
+        });
+    }
+
+    @Test
+    void 최대_주문_수량_예외_테스트() {
+        assertSimpleTest(() -> {
+            runException("3", "크리스마스파스타-15,바비큐립-10");
+            assertThat(output()).contains("[ERROR] 메뉴는 한 번에 최대 20개까지만 주문할 수 있습니다. 다시 입력해 주세요.");
         });
     }
 
