@@ -26,4 +26,8 @@ public class Order {
     public void setOrderMenu(Map<WootechcoMenu, Integer> orderMenu) {
         this.orderMenu = orderMenu;
     }
+
+    public int getOrderTotalPrice() {
+        return orderMenu.entrySet().stream().mapToInt(entry -> entry.getKey().getPrice() * entry.getValue()).sum();
+    }
 }

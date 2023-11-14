@@ -43,5 +43,6 @@ public class WootechcoStore {
     private void printReceipt(Order order) {
         OutputView.printReceiptTitle(order);
         OutputView.printOrderMenu(order);
+        OutputView.printOrderTotalPrice(order);
     }
 }
