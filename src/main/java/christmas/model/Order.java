@@ -51,8 +51,7 @@ public class Order {
         int weekDayDiscount = StoreConstant.DISCOUNT_PRICE;
         int WeekDayDiscountResult = 0;
         if (DateUtil.isWeekDay(this.reservationDate)) {
-            int dessertCount = (int) orderMenu.entrySet().stream().filter(entry -> entry.getKey().getType() == DESSERT)
-                    .count();
+            int dessertCount = orderMenu.entrySet().stream().filter(entry -> entry.getKey().getType() == DESSERT).mapToInt(entry->entry.getValue()).sum();
             WeekDayDiscountResult = dessertCount * weekDayDiscount;
         }
         return WeekDayDiscountResult;
@@ -62,9 +61,8 @@ public class Order {
         int weekEndDiscount = StoreConstant.DISCOUNT_PRICE;
         int WeekEndDiscountResult = 0;
         if (DateUtil.isWeekEnd(this.reservationDate)) {
-            int dessertCount = (int) orderMenu.entrySet().stream().filter(entry -> entry.getKey().getType() == MAIN)
-                    .count();
-            WeekEndDiscountResult = dessertCount * weekEndDiscount;
+            int mainCount = orderMenu.entrySet().stream().filter(entry -> entry.getKey().getType() == MAIN).mapToInt(entry->entry.getValue()).sum();
+            WeekEndDiscountResult = mainCount * weekEndDiscount;
         }
         return WeekEndDiscountResult;
     }
