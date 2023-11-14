@@ -35,9 +35,7 @@ public class InputView {
                 ReservationValidator.validateDuplicatedOrderMenu(orderMenu, menu);
                 orderMenu.put(menu, amount);
                 limitamount = limitamount + amount;
-                if (limitamount > 20) {
-                    throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_AMOUNT);
-                }
+                ReservationValidator.validateLimitAmout(limitamount);
             }
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_MENU);

@@ -23,4 +23,10 @@ public class ReservationValidator {
             throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_MENU);
         }
     }
+
+    public static void validateLimitAmout(int limitamount) {
+        if (limitamount > 20) {
+            throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_AMOUNT);
+        }
+    }
 }
