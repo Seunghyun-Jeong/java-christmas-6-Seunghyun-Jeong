@@ -112,4 +112,10 @@ public class OutputView {
         System.out.println("-" + PRICE_THOUSAND_FORMAT.format(order.getTotalDiscount()) + MESSAGE_SUFFIX_PRICE);
         System.out.println();
     }
+
+    public static void printPaymentResult(Order order) {
+        System.out.println(Message.OUTPUT_RECEIPT_PAYMENT_TITLE);
+        System.out.println(PRICE_THOUSAND_FORMAT.format(order.getOrderTotalPrice() - order.getTotalDiscount()) + MESSAGE_SUFFIX_PRICE);
+        System.out.println();
+    }
 }
