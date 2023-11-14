@@ -106,4 +106,10 @@ public class OutputView {
             System.out.println(Message.OUTPUT_RECEIPT_EMPTY);
         }
     }
+
+    public static void printEventTotalDiscount(Order order) {
+        System.out.println(Message.OUTPUT_RECEIPT_EVENT_TOTAL_TITLE);
+        System.out.println("-" + PRICE_THOUSAND_FORMAT.format(order.getTotalDiscount()) + MESSAGE_SUFFIX_PRICE);
+        System.out.println();
+    }
 }

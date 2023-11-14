@@ -11,11 +11,12 @@ public enum Message {
     OUTPUT_RECEIPT_EMPTY("없음"),
     OUTPUT_RECEIPT_EVENT_TITLE("<혜택 내역>"),
     OUTPUT_RECEIPT_EVENT_CHRISTMAS("크리스마스 디데이 할인: -"),
-
     OUTPUT_RECEIPT_EVENT_WEEKDAY("평일 할인: -"),
     OUTPUT_RECEIPT_EVENT_WEEKEND("주말 할인: -"),
     OUTPUT_RECEIPT_EVENT_SPECIAL("특별 할인: -"),
     OUTPUT_RECEIPT_EVENT_PRESENT("증정 할인: -25,000원"),
+    OUTPUT_RECEIPT_EVENT_TOTAL_TITLE("<총혜택 금액>"),
+    OUTPUT_RECEIPT_PAYMENT_TITLE("<할인 후 예상 결제 금액>"),
 
     INPUT_RESERVATION_DATE("12월 중 식당 예상 방문 날짜는 언제인가요? (숫자만 입력해 주세요!)"),
     INPUT_ORDER_MENU("주문하실 메뉴를 메뉴와 개수를 알려 주세요. (e.g. 해산물파스타-2,레드와인-1,초코케이크-1)"),

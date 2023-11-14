@@ -76,4 +76,17 @@ public class Order {
         }
         return specialDiscount;
     }
+
+    public int getTotalDiscount() {
+        int ddayDiscount = getDdayDiscount();
+        int WeekDayDiscountResult = getWeekDayDiscount();
+        int WeekEndDiscountResult = getWeekEndDiscount();
+        int specialDiscount = getSpecialDiscount();
+        int totalDiscount = (ddayDiscount + WeekDayDiscountResult + WeekEndDiscountResult + specialDiscount);
+        if (orderMenu.entrySet().stream().mapToInt(entry -> entry.getKey().getPrice() * entry.getValue()).sum()
+                >= StoreConstant.PRESENT_PAYMENT) {
+            totalDiscount += 25000;
+        }
+        return totalDiscount;
+    }
 }
