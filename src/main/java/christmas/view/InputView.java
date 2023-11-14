@@ -22,6 +22,7 @@ public class InputView {
 
     public static Map<WootechcoMenu, Integer> inputOrderMenu() {
         Map<WootechcoMenu, Integer> orderMenu = new HashMap<>();
+        int limitamount = 0;
         System.out.println(Message.INPUT_ORDER_MENU);
         try {
             String[] orderInput = Console.readLine().split(",");
@@ -33,6 +34,10 @@ public class InputView {
                 ReservationValidator.validateMenuInput(menu, amount);
                 ReservationValidator.validateDuplicatedOrderMenu(orderMenu, menu);
                 orderMenu.put(menu, amount);
+                limitamount = limitamount + amount;
+                if (limitamount > 20) {
+                    throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_AMOUNT);
+                }
             }
         } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
             throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_MENU);
