@@ -35,4 +35,8 @@ public enum WootechcoMenu {
         }
         return null;
     }
+
+    public String getMenuName() {
+        return menuName;
+    }
 }

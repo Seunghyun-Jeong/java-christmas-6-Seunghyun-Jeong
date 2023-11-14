@@ -13,6 +13,7 @@ public class WootechcoStore {
         printWelcome();
         order.setReservationDate(reserveDate());
         order.setOrderMenu(reserveOrderMenu());
+        printReceipt(order);
     }
 
     private void printWelcome() {
@@ -37,5 +38,10 @@ public class WootechcoStore {
                 OutputView.printErrorMessage(e.getMessage());
             }
         }
+    }
+
+    private void printReceipt(Order order) {
+        OutputView.printReceiptTitle(order);
+        OutputView.printOrderMenu(order);
     }
 }
