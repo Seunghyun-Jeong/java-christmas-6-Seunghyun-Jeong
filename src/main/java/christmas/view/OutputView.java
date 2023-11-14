@@ -115,7 +115,26 @@ public class OutputView {
 
     public static void printPaymentResult(Order order) {
         System.out.println(Message.OUTPUT_RECEIPT_PAYMENT_TITLE);
-        System.out.println(PRICE_THOUSAND_FORMAT.format(order.getOrderTotalPrice() - order.getTotalDiscount()) + MESSAGE_SUFFIX_PRICE);
+        System.out.println(PRICE_THOUSAND_FORMAT.format(order.getOrderTotalPrice() - order.getTotalDiscount())
+                + MESSAGE_SUFFIX_PRICE);
         System.out.println();
+    }
+
+    public static void printEventBadge(Order order) {
+        System.out.println(Message.OUTPUT_RECEIPT_BADGE_TITLE);
+        int totalDiscount = order.getTotalDiscount();
+        if (totalDiscount >= StoreConstant.BADGE_SANTA) {
+            System.out.println(Message.OUTPUT_RECEIPT_BADGE_SANTA);
+            return;
+        }
+        if (totalDiscount >= StoreConstant.BADGE_TREE) {
+            System.out.println(Message.OUTPUT_RECEIPT_BADGE_TREE);
+            return;
+        }
+        if (totalDiscount >= StoreConstant.BADGE_STAR) {
+            System.out.println(Message.OUTPUT_RECEIPT_BADGE_STAR);
+            return;
+        }
+        System.out.println(Message.OUTPUT_RECEIPT_EMPTY);
     }
 }
