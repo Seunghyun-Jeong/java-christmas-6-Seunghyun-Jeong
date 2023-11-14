@@ -2,8 +2,11 @@ package christmas.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import christmas.constant.menu.Message;
+import christmas.constant.menu.WootechcoMenu;
 import christmas.exception.WootechcoIllegalArgumentException;
 import christmas.util.ReservationValidator;
+import java.util.HashMap;
+import java.util.Map;
 
 public class InputView {
     public static int inputReservationDate() {
@@ -15,5 +18,25 @@ public class InputView {
         } catch (NumberFormatException e) {
             throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_DATE);
         }
+    }
+
+    public static Map<WootechcoMenu, Integer> inputOrderMenu() {
+        Map<WootechcoMenu, Integer> orderMenu = new HashMap<>();
+        System.out.println(Message.INPUT_ORDER_MENU);
+        try {
+            String[] orderInput = Console.readLine().split(",");
+            for (String orderString : orderInput) {
+                String[] orderResult = orderString.split("-");
+                String menuString = orderResult[0];
+                WootechcoMenu menu = WootechcoMenu.ofMenuName(menuString);
+                int amount = Integer.parseInt(orderResult[1]);
+                ReservationValidator.validateMenuInput(menu, amount);
+                ReservationValidator.validateDuplicatedOrderMenu(orderMenu, menu);
+                orderMenu.put(menu, amount);
+            }
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_MENU);
+        }
+        return orderMenu;
     }
 }

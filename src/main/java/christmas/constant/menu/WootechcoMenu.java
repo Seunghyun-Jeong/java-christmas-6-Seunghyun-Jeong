@@ -1,5 +1,7 @@
 package christmas.constant.menu;
 
+import java.util.Objects;
+
 public enum WootechcoMenu {
     SOUP(MenuType.APPETIZER, 6000, "양송이수프"),
     TAPAS(MenuType.APPETIZER, 5500, "타파스"),
@@ -23,5 +25,14 @@ public enum WootechcoMenu {
         this.type = type;
         this.price = price;
         this.menuName = menuName;
+    }
+
+    public static WootechcoMenu ofMenuName(String menuName) {
+        for (WootechcoMenu value : WootechcoMenu.values()) {
+            if (Objects.equals(value.menuName, menuName)) {
+                return value;
+            }
+        }
+        return null;
     }
 }
