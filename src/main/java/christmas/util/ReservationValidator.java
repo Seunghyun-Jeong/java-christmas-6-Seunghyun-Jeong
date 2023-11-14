@@ -1,8 +1,12 @@
 package christmas.util;
 
+import static christmas.constant.menu.MenuType.BEVERAGE;
+import static christmas.constant.menu.MenuType.DESSERT;
+
 import christmas.constant.menu.Message;
 import christmas.constant.menu.WootechcoMenu;
 import christmas.exception.WootechcoIllegalArgumentException;
+import java.util.HashMap;
 import java.util.Map;
 
 public class ReservationValidator {
@@ -27,6 +31,12 @@ public class ReservationValidator {
     public static void validateLimitAmout(int limitamount) {
         if (limitamount > 20) {
             throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_AMOUNT);
+        }
+    }
+
+    public static void validateOnlyBeverage(Map<WootechcoMenu, Integer> orderMenu) {
+        if (orderMenu.entrySet().stream().filter(entry -> entry.getKey().getType() != BEVERAGE).count() == 0) {
+            throw new WootechcoIllegalArgumentException(Message.ERROR_INVALID_ORDER_ONLY_BERVARGE);
         }
     }
 }
