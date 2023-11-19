@@ -3,7 +3,7 @@ package christmas.controller;
 import christmas.constant.menu.WootechcoMenu;
 import christmas.exception.WootechcoIllegalArgumentException;
 import christmas.model.Order;
-import christmas.serivce.OrderCalculator;
+import christmas.service.OrderCalculator;
 import christmas.view.InputView;
 import christmas.view.OutputView;
 import java.util.Map;

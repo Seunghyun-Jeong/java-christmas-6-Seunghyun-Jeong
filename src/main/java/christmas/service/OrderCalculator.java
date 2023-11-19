@@ -1,4 +1,4 @@
-package christmas.serivce;
+package christmas.service;
 
 import static christmas.constant.menu.MenuType.DESSERT;
 import static christmas.constant.menu.MenuType.MAIN;
